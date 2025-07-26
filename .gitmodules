@@ -9,7 +9,7 @@
 	url = git://git.yoctoproject.org/meta-raspberrypi
 [submodule "layers/meta-openembedded"]
 	path = layers/meta-openembedded
-	url = git://git.openembedded.org/meta-openembedded
+	url = https://github.com/openembedded/meta-openembedded.git
 [submodule "layers/meta-pitrac"]
 	path = layers/meta-pitrac
 	url = https://github.com/Sammich10/meta-pitrac.git
