@@ -1,15 +1,19 @@
 [submodule "layers/poky"]
 	path = layers/poky
 	url = https://github.com/yoctoproject/poky.git
+	branch = scarthgap
 [submodule "layers/openembedded-core"]
 	path = layers/openembedded-core
 	url = git://git.openembedded.org/openembedded-core
+	branch = scarthgap
 [submodule "layers/meta-raspberrypi"]
 	path = layers/meta-raspberrypi
 	url = git://git.yoctoproject.org/meta-raspberrypi
+	branch = scarthgap
 [submodule "layers/meta-openembedded"]
 	path = layers/meta-openembedded
 	url = https://github.com/openembedded/meta-openembedded.git
+	branch = scarthgap
 [submodule "layers/meta-pitrac"]
 	path = layers/meta-pitrac
 	url = https://github.com/Sammich10/meta-pitrac.git
