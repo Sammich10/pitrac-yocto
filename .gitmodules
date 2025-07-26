@@ -10,3 +10,6 @@
 [submodule "layers/meta-oe"]
 	path = layers/meta-oe
 	url = git://git.openembedded.org/meta-openembedded
+[submodule "layers/meta-pitrac"]
+	path = layers/meta-pitrac
+	url = https://github.com/Sammich10/meta-pitrac.git
