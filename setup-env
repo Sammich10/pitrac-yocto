@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# This script sets up the environment for building a Yocto project.
+. layers/poky/oe-init-build-env .
+
