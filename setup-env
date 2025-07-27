@@ -1,5 +1,6 @@
 #!/bin/bash
 
 # This script sets up the environment for building a Yocto project.
+. /opt/yocto/environment-setup-x86_64-pokysdk-linux
 . layers/poky/oe-init-build-env .
 

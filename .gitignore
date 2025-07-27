@@ -5,3 +5,6 @@ sstate-cache
 *.log
 *.lock
 *.sock
+*.wget*
+.local
+.cache
