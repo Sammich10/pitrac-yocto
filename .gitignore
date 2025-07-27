@@ -8,3 +8,4 @@ sstate-cache
 *.wget*
 .local
 .cache
+conf/*.txt
