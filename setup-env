@@ -1,6 +1,13 @@
 #!/bin/bash
 
+BUILDTOOLS=
+if [ -d "${BUILDTOOLS_DIR}" ]; then
+    BUILDTOOLS="${BUILDTOOLS_DIR}"
+else
+    BUILDTOOLS="/opt/yocto"
+fi
+
 # This script sets up the environment for building a Yocto project.
-. /opt/yocto/environment-setup-x86_64-pokysdk-linux
+. ${BUILDTOOLS}
 . layers/poky/oe-init-build-env .
 

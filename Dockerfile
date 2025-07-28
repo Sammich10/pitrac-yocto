@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     file \
     wget \
     bash \
+    bmap-tools \
     cpio \
     diffstat \
     gawk \

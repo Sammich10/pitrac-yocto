@@ -17,3 +17,7 @@
 [submodule "layers/meta-pitrac"]
 	path = layers/meta-pitrac
 	url = https://github.com/Sammich10/meta-pitrac.git
+[submodule "layers/meta-u-boot-mixin"]
+	path = layers/meta-u-boot-mixin
+	url = https://git.yoctoproject.org/meta-lts-mixins
+	branch = scarthgap/u-boot

@@ -6,6 +6,9 @@ sstate-cache
 *.lock
 *.sock
 *.wget*
-.local
 .cache
+.bash_history
+.local
+.vscode
 conf/*.txt
+*.log
