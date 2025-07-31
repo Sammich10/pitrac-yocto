@@ -1,14 +1,21 @@
 {
     "python.autoComplete.extraPaths": [
         "${workspaceFolder}/sources/poky/bitbake/lib",
-        "${workspaceFolder}/sources/poky/meta/lib"
+        "${workspaceFolder}/sources/poky/meta/lib",
+        "${workspaceFolder}/layers/poky/bitbake/lib",
+        "${workspaceFolder}/layers/poky/meta/lib"
     ],
     "python.analysis.extraPaths": [
         "${workspaceFolder}/sources/poky/bitbake/lib",
-        "${workspaceFolder}/sources/poky/meta/lib"
+        "${workspaceFolder}/sources/poky/meta/lib",
+        "${workspaceFolder}/layers/poky/bitbake/lib",
+        "${workspaceFolder}/layers/poky/meta/lib"
     ],
     "files.associations": {
         "*.conf": "bitbake",
         "*.inc": "bitbake"
-    }
+    },
+    "bitbake.pathToEnvScript": "${workspaceFolder}/layers/poky/oe-init-build-env",
+    "bitbake.pathToBitbakeFolder": "${workspaceFolder}/layers/poky/bitbake",
+    "bitbake.sdkImage": "core-image-minimal"
 }

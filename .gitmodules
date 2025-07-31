@@ -21,3 +21,11 @@
 	path = layers/meta-u-boot-mixin
 	url = https://git.yoctoproject.org/meta-lts-mixins
 	branch = scarthgap/u-boot
+[submodule "layers/meta-java"]
+	path = layers/meta-java
+	url = https://github.com/meta-java/meta-java.git
+	branch = scarthgap
+[submodule "layers/meta-qt5"]
+	path = layers/meta-qt5
+	url = https://github.com/meta-qt5/meta-qt5.git
+	branch = scarthgap

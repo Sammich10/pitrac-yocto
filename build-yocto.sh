@@ -5,12 +5,18 @@ print_usage() {
     echo "Options:"
     echo "  -c, --clean          Clean the temp directory and optionally prune old sstate-cache files. Can be specified up to 3 times for different levels of cleaning."
     echo "  -i, --image <name>   Specify the image to build (default: core-image-minimal)"
+    echo "  --no-build           Do not run the bitbake build process"
+    echo "  --copy-image         Copy the completed image to an SD card"
+    echo "  --image-dev          Specify the device to place the image on"
     echo "  -h, --help           Show this help message"
     exit 1
 }
 
 CLEAN=0
-IMAGE="core-image"
+IMAGE="pitrac-image-base"
+BUILD=1
+IMG_DEV="/dev/mmcblk0p1"
+COPY_IMG=0
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -20,6 +26,18 @@ while [[ $# -gt 0 ]]; do
             ;;
         -i|--image)
             IMAGE="$2"
+            shift 2
+            ;;
+        -n|--no-build)
+            BUILD=0
+            shift
+            ;;
+        --copy-image)
+            COPY_IMG=1
+            shift
+            ;;
+        --image-dev)
+            IMG_DEV="$2"
             shift 2
             ;;
         -h|--help)
@@ -46,7 +64,7 @@ fi
 
 if [[ $CLEAN -gt 2 ]]; then
     echo "Cleaning sstate for all recipes"
-    bitbake -c cleanall world
+    bitbake -c cleanall worldz
 fi
 
 if [[ ! -d "buildlogs" ]]; then
@@ -63,4 +81,9 @@ if [[ $? -eq 0 ]]; then
 else
     echo "Build failed. Check build_${timestamp}.log for details."
     exit 1
+fi
+
+if [[ $COPY_IMG -eq 1 ]]; then
+    # Use bmaptool to create the SD card image for the Pi
+    sudo bmaptool copy core-image-minimal-raspberrypi5.rootfs.wic.bz2 ${IMG_DEV}
 fi
