@@ -56,8 +56,7 @@ else
     wget https://downloads.yoctoproject.org/releases/yocto/yocto-5.0/buildtools/x86_64-buildtools-nativesdk-standalone-5.0.sh \
         && chmod +x x86_64-buildtools-nativesdk-standalone-5.0.sh \
         && ./x86_64-buildtools-nativesdk-standalone-5.0.sh -y -d /opt/yocto \
-        && rm x86_64-buildtools-nativesdk-standalone-5.0.sh \
-        || echo "Failed to download or install Yocto build tools." && exit 1
+        && rm x86_64-buildtools-nativesdk-standalone-5.0.sh
 
     echo "Yocto build tools installed successfully."
 fi
