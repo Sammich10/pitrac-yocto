@@ -1,13 +1,28 @@
 #!/bin/bash
+# This script sets up the environment for building a Yocto project.
 
-BUILDTOOLS=
-if [ -d "${BUILDTOOLS_DIR}" ]; then
-    BUILDTOOLS="${BUILDTOOLS_DIR}"
+WD=$(pwd)
+
+# Set the paths for the build tools and environment setup
+BUILDTOOLS="/opt/yocto/environment-setup-x86_64-pokysdk-linux"
+POKYTOOLS=${WD}/layers/poky/oe-init-build-env 
+
+# Source the build tools for scarthgap Yocto
+if [ ! -f ${BUILDTOOLS} ]; then
+    echo "Build tools not found at ${BUILDTOOLS}. Please check the path."
+    exit 1
 else
-    BUILDTOOLS="/opt/yocto"
+    echo "Sourcing build tools from ${BUILDTOOLS}..."
+    . ${BUILDTOOLS}
 fi
 
-# This script sets up the environment for building a Yocto project.
-. ${BUILDTOOLS}
-. layers/poky/oe-init-build-env .
+# Source the Poky environment setup script
+if [ ! -f ${POKYTOOLS} ]; then
+    echo "Poky environment setup script not found at ${POKYTOOLS}. Please check the path."
+    exit 1
+else
+    echo "Sourcing Poky environment setup script from ${POKYTOOLS}..."
+    . ${POKYTOOLS} .
+fi
 
+exit 0

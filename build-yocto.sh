@@ -6,16 +6,20 @@ print_usage() {
     echo "  -c, --clean          Clean the temp directory and optionally prune old sstate-cache files. Can be specified up to 3 times for different levels of cleaning."
     echo "  -i, --image <name>   Specify the image to build (default: core-image-minimal)"
     echo "  --no-build           Do not run the bitbake build process"
+    echo "  --build-sdk          Build the SDK instead of the image"
     echo "  --copy-image         Copy the completed image to an SD card"
     echo "  --image-dev          Specify the device to place the image on"
     echo "  -h, --help           Show this help message"
     exit 1
 }
 
+# Default values
 CLEAN=0
 IMAGE="pitrac-image-base"
 BUILD=1
-IMG_DEV="/dev/mmcblk0p1"
+SDK=0
+# Default device for copying the image
+IMG_DEV="/dev/sde1"
 COPY_IMG=0
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -39,6 +43,10 @@ while [[ $# -gt 0 ]]; do
         --image-dev)
             IMG_DEV="$2"
             shift 2
+            ;;
+        --build-sdk)
+            SDK=1
+            shift
             ;;
         -h|--help)
             print_usage
@@ -74,16 +82,19 @@ fi
 timestamp=$(date +%Y-%m-%d_%H:%M:%S)
 echo "Building image: ${IMAGE}. Build start at {$timestamp}"
 bitbake $IMAGE | tee buildlogs/build_${timestamp}.log
-if [[ $? -eq 0 ]]; then
-    echo "Build completed successfully. Output saved to build_${timestamp}.log"
-    echo "You can find the built image in tmp/deploy/images/"
-    exit 0
-else
-    echo "Build failed. Check build_${timestamp}.log for details."
-    exit 1
+
+if [[ $SDK -eq 1 ]]; then
+    echo "Building SDK..."
+    bitbake pitrac-image-base -c populate_sdk
+    echo "SDK build completed."
 fi
 
 if [[ $COPY_IMG -eq 1 ]]; then
+    # Check if the image device is mounted
+    if mount | grep -q ${IMG_DEV}; then
+        echo "Unmounting ${IMG_DEV}..."
+        sudo umount ${IMG_DEV}
+    fi
     # Use bmaptool to create the SD card image for the Pi
-    sudo bmaptool copy core-image-minimal-raspberrypi5.rootfs.wic.bz2 ${IMG_DEV}
+    sudo bmaptool copy ${IMAGE}-raspberrypi5.rootfs.wic.bz2 ${IMG_DEV}
 fi
