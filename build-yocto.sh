@@ -10,7 +10,7 @@ print_usage() {
     echo "  --copy-image         Copy the completed image to an SD card"
     echo "  --image-dev          Specify the device to place the image on"
     echo "  -h, --help           Show this help message"
-    exit 1
+    return 1
 }
 
 # Default values
@@ -50,11 +50,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         -h|--help)
             print_usage
-            exit 0
+            return 0
             ;;
         *)
             echo "Unknown option: $1"
-            exit 1
+            return 1
             ;;
     esac
     shift
@@ -72,7 +72,7 @@ fi
 
 if [[ $CLEAN -gt 2 ]]; then
     echo "Cleaning sstate for all recipes"
-    bitbake -c cleanall worldz
+    bitbake -c cleanall world
 fi
 
 if [[ ! -d "buildlogs" ]]; then

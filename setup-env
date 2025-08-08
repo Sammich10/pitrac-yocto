@@ -3,14 +3,24 @@
 
 WD=$(pwd)
 
+
 # Set the paths for the build tools and environment setup
-BUILDTOOLS="/opt/yocto/environment-setup-x86_64-pokysdk-linux"
-POKYTOOLS=${WD}/layers/poky/oe-init-build-env 
+BUILDTOOLS=
+if [ -z "$BUILDTOOLS" ]; then
+    BUILDTOOLS="/opt/yocto/environment-setup-x86_64-pokysdk-linux"
+    echo "BUILDTOOLS is not set. Using default location ${BUILDTOOLS}."
+fi
+
+POKYTOOLS=
+if [ -z "$POKYTOOLS" ]; then
+    POKYTOOLS="${WD}/layers/poky/oe-init-build-env"
+    echo "POKYTOOLS is not set. Using default location ${POKYTOOLS}."
+fi
 
 # Source the build tools for scarthgap Yocto
 if [ ! -f ${BUILDTOOLS} ]; then
     echo "Build tools not found at ${BUILDTOOLS}. Please check the path."
-    exit 1
+    return 1
 else
     echo "Sourcing build tools from ${BUILDTOOLS}..."
     . ${BUILDTOOLS}
@@ -19,10 +29,10 @@ fi
 # Source the Poky environment setup script
 if [ ! -f ${POKYTOOLS} ]; then
     echo "Poky environment setup script not found at ${POKYTOOLS}. Please check the path."
-    exit 1
+    return 1
 else
     echo "Sourcing Poky environment setup script from ${POKYTOOLS}..."
     . ${POKYTOOLS} .
 fi
 
-exit 0
+return 0
