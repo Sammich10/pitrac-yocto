@@ -10,7 +10,6 @@ print_usage() {
     echo "  --copy-image         Copy the completed image to an SD card"
     echo "  --image-dev          Specify the device to place the image on"
     echo "  -h, --help           Show this help message"
-    return 1
 }
 
 # Default values
