@@ -59,6 +59,9 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+# Source the environment setup script
+. setup-env > /dev/null
+
 if [[ $CLEAN -gt 0 ]]; then
     echo "Cleaning temp directory..."
     rm -rf tmp/

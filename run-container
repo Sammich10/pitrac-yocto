@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# This script runs a Yocto build container with the current user mapped into the container.
+
+# Parse command line arguments and append them to the podman run command
+ARGS=()
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            echo "Usage: $0 [options]"
+            echo "Options:"
+            echo "  -h, --help       Show this help message"
+            exit 0
+            ;;
+        *)
+            ARGS+=("$1")
+            shift # Move to the next argument
+            ;;
+    esac
+done
+
 # Get the CWD for the repository
 CWD=$(pwd)
 echo "Attaching at ${CWD}"
@@ -10,6 +29,7 @@ HOST_GID=$(id -g)
 
 # Run the container. The container is logged in as the host user and the UID / GID of the host user will be mapped into the container instance
 podman run -it --rm \
+    "${ARGS[@]}" \
     --privileged \
     -v ${CWD}:${CWD} \
     -v /opt/yocto:/opt/yocto \
