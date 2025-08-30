@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Default values for copying image
+IMG_DEFAULT=tmp/deploy/images/raspberrypi5/pitrac-image-base-raspberrypi5.rootfs.wic.bz2
+DEV_DEFAULT=/dev/sde
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|--image)
+            COPY_IMG=$2
+            shift
+            ;;
+        -d|--device)
+            IMG_DEV="$2"
+            shift 2
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
+# Use default image if not specified
+if [ -z "$COPY_IMG" ]; then
+    COPY_IMG=$IMG_DEFAULT
+    echo "No image specified. Using default image: $COPY_IMG"
+fi
+
+# Use default device if not specified
+if [ -z "$IMG_DEV" ]; then
+    IMG_DEV=$DEV_DEFAULT
+    echo "No device specified. Using default device: $IMG_DEV"
+fi
+
+# Check if the image device is mounted
+if mount | grep -q ${IMG_DEV}; then
+    echo "Unmounting ${IMG_DEV}..."
+    # Unmount any mounted partitions on the device
+    sudo umount ${IMG_DEV}*
+fi
+
+# Use bmaptool to create the SD card image for the Pi
+sudo bmaptool copy ${COPY_IMG} ${IMG_DEV}

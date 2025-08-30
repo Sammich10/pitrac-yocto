@@ -90,13 +90,3 @@ if [[ $SDK -eq 1 ]]; then
     bitbake pitrac-image-base -c populate_sdk
     echo "SDK build completed."
 fi
-
-if [[ $COPY_IMG -eq 1 ]]; then
-    # Check if the image device is mounted
-    if mount | grep -q ${IMG_DEV}; then
-        echo "Unmounting ${IMG_DEV}..."
-        sudo umount ${IMG_DEV}
-    fi
-    # Use bmaptool to create the SD card image for the Pi
-    sudo bmaptool copy ${IMAGE}-raspberrypi5.rootfs.wic.bz2 ${IMG_DEV}
-fi
