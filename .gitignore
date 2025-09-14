@@ -9,6 +9,6 @@ sstate-cache
 .cache
 .bash_history
 .local
-.vscode
+.vscode/
 conf/*.txt
 *.log
