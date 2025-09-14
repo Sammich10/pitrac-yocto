@@ -7,7 +7,7 @@ WD=$(pwd)
 # Set the paths for the build tools and environment setup
 BUILDTOOLS=
 if [ -z "$BUILDTOOLS" ]; then
-    BUILDTOOLS="/opt/yocto/environment-setup-x86_64-pokysdk-linux"
+    BUILDTOOLS="/tmp/yocto/environment-setup-x86_64-pokysdk-linux"
     echo "BUILDTOOLS is not set. Using default location ${BUILDTOOLS}."
 fi
 
@@ -23,7 +23,7 @@ if [ ! -f ${BUILDTOOLS} ]; then
     return 1
 else
     echo "Sourcing build tools from ${BUILDTOOLS}..."
-    . ${BUILDTOOLS}
+    . "${BUILDTOOLS}"
 fi
 
 # Source the Poky environment setup script
@@ -32,7 +32,7 @@ if [ ! -f ${POKYTOOLS} ]; then
     return 1
 else
     echo "Sourcing Poky environment setup script from ${POKYTOOLS}..."
-    . ${POKYTOOLS} .
+    . "${POKYTOOLS}" .
 fi
 
 return 0
