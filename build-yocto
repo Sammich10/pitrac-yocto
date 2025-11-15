@@ -4,7 +4,7 @@ print_usage() {
     echo "Usage: $0 [-c|--clean] [-i|--image <image_name>] [-h|--help]"
     echo "Options:"
     echo "  -c, --clean          Clean the temp directory and optionally prune old sstate-cache files. Can be specified up to 3 times for different levels of cleaning."
-    echo "  -i, --image <name>   Specify the image to build (default: core-image-minimal)"
+    echo "  -i, --image <name>   Specify the image to build (default: pitrac-image-base)"
     echo "  --no-build           Do not run the bitbake build process"
     echo "  --build-sdk          Build the SDK instead of the image"
     echo "  --copy-image         Copy the completed image to an SD card"
@@ -49,11 +49,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         -h|--help)
             print_usage
-            return 0
+            exit 1
             ;;
         *)
             echo "Unknown option: $1"
-            return 1
+            exit 1
             ;;
     esac
     shift
