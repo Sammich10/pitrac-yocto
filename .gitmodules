@@ -30,3 +30,6 @@
 	path = layers/meta-qt5
 	url = https://github.com/meta-qt5/meta-qt5.git
 	branch = scarthgap
+[submodule "layers/meta-hailo"]
+	path = layers/meta-hailo
+	url = https://github.com/Sammich10/meta-hailo.git

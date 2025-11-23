@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default values for copying image
-IMG_DEFAULT=tmp/deploy/images/raspberrypi5/pitrac-image-base-raspberrypi5.rootfs.wic.bz2
+IMG_DEFAULT=./tmp/deploy/images/raspberrypi5/pitrac-image-base-raspberrypi5.rootfs.wic.bz2
 DEV_DEFAULT=/dev/sde
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -29,6 +29,12 @@ fi
 if [ -z "$IMG_DEV" ]; then
     IMG_DEV=$DEV_DEFAULT
     echo "No device specified. Using default device: $IMG_DEV"
+fi
+
+# Prepend /dev/ if not already present
+if [[ "$IMG_DEV" != /dev/* ]]; then
+    IMG_DEV="/dev/$IMG_DEV"
+    echo "Prepending /dev/ to device: $IMG_DEV"
 fi
 
 # Check if the image device is mounted

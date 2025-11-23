@@ -3,23 +3,18 @@
 print_usage() {
     echo "Usage: $0 [-c|--clean] [-i|--image <image_name>] [-h|--help]"
     echo "Options:"
-    echo "  -c, --clean          Clean the temp directory and optionally prune old sstate-cache files. Can be specified up to 3 times for different levels of cleaning."
+    echo "  -c, --clean          Clean data from old builds. Can be specified up to 3 times for different levels of cleaning."
     echo "  -i, --image <name>   Specify the image to build (default: pitrac-image-base)"
-    echo "  --no-build           Do not run the bitbake build process"
-    echo "  --build-sdk          Build the SDK instead of the image"
-    echo "  --copy-image         Copy the completed image to an SD card"
-    echo "  --image-dev          Specify the device to place the image on"
+    echo "  --no-image           Do not run the bitbake build process for the PiTrac image"
+    echo "  --build-sdk          Build the SDK"
     echo "  -h, --help           Show this help message"
 }
 
 # Default values
 CLEAN=0
 IMAGE="pitrac-image-base"
-BUILD=1
-SDK=0
-# Default device for copying the image
-IMG_DEV="/dev/sde1"
-COPY_IMG=0
+BUILD_IMAGE=1
+BUILD_SDK=0
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -31,20 +26,12 @@ while [[ $# -gt 0 ]]; do
             IMAGE="$2"
             shift 2
             ;;
-        -n|--no-build)
-            BUILD=0
+        --no-image)
+            BUILD_IMAGE=0
             shift
-            ;;
-        --copy-image)
-            COPY_IMG=1
-            shift
-            ;;
-        --image-dev)
-            IMG_DEV="$2"
-            shift 2
             ;;
         --build-sdk)
-            SDK=1
+            BUILD_SDK=1
             shift
             ;;
         -h|--help)
@@ -56,7 +43,6 @@ while [[ $# -gt 0 ]]; do
             exit 1
             ;;
     esac
-    shift
 done
 
 # Source the environment setup script
@@ -82,11 +68,27 @@ if [[ ! -d "buildlogs" ]]; then
 fi
 
 timestamp=$(date +%Y-%m-%d_%H:%M:%S)
-echo "Building image: ${IMAGE}. Build start at {$timestamp}"
-bitbake $IMAGE | tee buildlogs/build_${timestamp}.log
+if [ $BUILD_IMAGE -gt 0 ]; then
+    echo "Building image: ${IMAGE}. Build start at {$timestamp}" | tee buildlogs/build_${timestamp}.log
 
-if [[ $SDK -eq 1 ]]; then
-    echo "Building SDK..."
-    bitbake pitrac-image-base -c populate_sdk
-    echo "SDK build completed."
+    # Run bitbake and get the return value to ensure it succeeded
+    bitbake $IMAGE 2>&1 | tee buildlogs/build_${timestamp}.log
+    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+        echo "Image build succeeded"
+    else
+        echo "Image build failed with exit code ${PIPESTATUS[0]}"
+        exit ${PIPESTATUS[0]}
+    fi
+fi
+
+echo "$BUILD_SDK"
+if [ $BUILD_SDK -gt 0 ]; then
+    echo "Building SDK: ${IMAGE} Build start at {$timestamp}" | tee buildlogs/sdk_build_${timestamp}.log
+    bitbake $IMAGE -c populate_sdk 2>&1 | tee buildlogs/sdk_build_${timestamp}.log
+    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+        echo "SDK build succeeded"
+    else
+        echo "SDK build failed with exit code ${PIPESTATUS[0]}"
+        exit ${PIPESTATUS[0]}
+    fi
 fi

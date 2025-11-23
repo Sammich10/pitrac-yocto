@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This script is used to package build artifacts into a release tarball. 
+# It assumes that the build artifacts are located in a specific directory.
+
+# Set the output directory for the release tarball
+OUTPUT_DIR="./release"
+SDK_DIR_PATH="./tmp/deploy/sdk/"
+
+# Create the output directory if it doesn't exist
+mkdir -p "${OUTPUT_DIR}"
+
+# Define the name of the tarball
+SDK_TARBALL_NAME="sdk-artifacts.tar.gz"
+BSP_TARBALL_NAME="bsp-artifacts.tar.gz"
+
+# Create the SDK tarball
+echo "Creating SDK tarball..." 
+
+
+
